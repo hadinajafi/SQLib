@@ -4,7 +4,7 @@ public class QueryImp implements Query {
 
     private String querySoFar;
 
-    private StringBuilder stringBuilder;
+    private final StringBuilder stringBuilder;
 
     public QueryImp(){
         querySoFar = "";
@@ -44,7 +44,6 @@ public class QueryImp implements Query {
      *
      * @param table Required table name
      * @return This
-     * @throws Exception
      */
     @Override
     public QueryImp from(String table) throws Exception {
@@ -54,7 +53,7 @@ public class QueryImp implements Query {
             throw new Exception("FROM statement can't come before SELECT statement.");
         if(this.getSelectedColumns() == null)
             throw new Exception("No column selected!");
-        querySoFar = stringBuilder.append("FROM " + table + " ").toString();
+        querySoFar = stringBuilder.append("FROM ").append(table).append(" ").toString();
         return this;
     }
 

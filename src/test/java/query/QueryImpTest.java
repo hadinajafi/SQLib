@@ -1,12 +1,11 @@
 package query;
 
-import org.hibernate.criterion.Example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class QueryImpTest {
 
@@ -34,14 +33,14 @@ class QueryImpTest {
     }
 
     @Test
-    void selectTwiceShouldThrowException() throws Exception{
-        Exception ex = assertThrows(Exception.class, ()->{queryImp.select().select();});
+    void selectTwiceShouldThrowException() {
+        Exception ex = assertThrows(Exception.class, ()-> queryImp.select().select());
         assertEquals("SELECT statement used in wrong order!", ex.getMessage());
     }
 
     @Test
-    void fromWithoutTableShouldThrowsException() throws Exception {
-        Exception ex = assertThrows(Exception.class, ()->{queryImp.from("");});
+    void fromWithoutTableShouldThrowsException() {
+        Exception ex = assertThrows(Exception.class, ()-> queryImp.from(""));
         assertEquals("Required parameter missed!", ex.getMessage());
     }
 
@@ -53,25 +52,19 @@ class QueryImpTest {
 
     @Test
     void fromBeforeSelectShouldThrowException(){
-        Exception ex = assertThrows(Exception.class, ()->{
-            queryImp.from("table").select();
-        });
+        Exception ex = assertThrows(Exception.class, ()-> queryImp.from("table").select());
         assertEquals("FROM statement can't come before SELECT statement.", ex.getMessage());
     }
 
     @Test
     void withouSelectionShouldThrowException(){
-        Exception ex = assertThrows(Exception.class, ()->{
-            queryImp.select().from("table");
-        });
+        Exception ex = assertThrows(Exception.class, ()-> queryImp.select().from("table"));
         assertEquals("No column selected!", ex.getMessage());
     }
 
     @Test
     void selectAllColumnsWithoutSelectStatementShouldThrowException(){
-        Exception ex = assertThrows(Exception.class, ()->{
-            queryImp.all();
-        });
+        Exception ex = assertThrows(Exception.class, ()-> queryImp.all());
         assertEquals("SELECT statement missed!", ex.getMessage());
     }
 
