@@ -7,4 +7,8 @@ public interface Query {
     Query from(String table) throws Exception;
 
     Query all() throws Exception;
+
+    Query fieldsOf(Class<?> clazz) throws Exception;
+
+    String getQueryString();
 }
