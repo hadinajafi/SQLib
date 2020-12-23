@@ -1,26 +1,36 @@
 package query;
 
+import common.exception.StatementValidator;
+import criteria.Selection;
+import criteria.SelectionImp;
+
 import static common.exception.ExceptionMessageBuilder.messageBuilder;
 import static common.util.Constants.*;
 
 public class QueryImp implements Query {
 
     private String querySoFar;
-    EntityManager<?> em;
+    private Selection selection;
 
     private final StringBuilder stringBuilder;
 
-    public QueryImp() {
+    private QueryImp() {
         querySoFar = "";
         stringBuilder = new StringBuilder();
         stringBuilder.append(querySoFar);
+        selection = new SelectionImp();
+    }
+
+    public static QueryImp createQuery(){
+        return new QueryImp();
     }
 
     /**
      * @return Query string so far created by builder
      */
     @Override
-    public String getQueryString() {
+    public String getQueryString() throws Exception {
+        StatementValidator.verifyStatement(querySoFar);
         return querySoFar;
     }
 
@@ -28,18 +38,19 @@ public class QueryImp implements Query {
      * @return This
      */
     @Override
-    public QueryImp select() throws Exception {
-        if (querySoFar.contains(SELECT))
-            throw new Exception(messageBuilder(WRONG_ORDER, SELECT));
-        querySoFar = stringBuilder.append(SELECT).append(" ").toString();
+    public Query select(String... columns) {
+        querySoFar = stringBuilder.append(selection.select(columns).getQueryString()).toString();
         return this;
     }
 
     @Override
-    public QueryImp all() throws Exception {
-        if (!querySoFar.contains(SELECT))
-            throw new Exception(messageBuilder(IS_MISSING, SELECT));
-        querySoFar = stringBuilder.append("* ").toString();
+    public Query select(Class clazz) {
+        fieldsOf(clazz);
+        return this;
+    }
+
+    private Query fieldsOf(Class object) {
+        querySoFar = stringBuilder.append(selection.select(object).getQueryString()).toString();
         return this;
     }
 
@@ -48,35 +59,15 @@ public class QueryImp implements Query {
      * @return This
      */
     @Override
-    public QueryImp from(String table) throws Exception {
-        if (table == null || table.equals(""))
-            throw new Exception(REQ_PARAM_MISSING);
-        if (!querySoFar.contains(SELECT))
-            throw new Exception(messageBuilder(STATEMENT_BEFORE_ANOTHER, FROM, SELECT));
-//        if (this.getSelectedColumns() == null)
-//            throw new Exception(NO_COLUMN_SELECTED);
+    public Query from(String table) throws Exception {
         querySoFar = stringBuilder.append(FROM).append(" ").append(table).append(" ").toString();
+        StatementValidator.verifyStatement(querySoFar);
         return this;
     }
 
     @Override
-    public Query fieldsOf(Class<?> clazz) throws Exception {
-        if (!querySoFar.contains(SELECT))
-            throw new Exception(messageBuilder(IS_MISSING, SELECT));
-        em = new EntityManager<>(clazz);
-        for(int i = 0; i < em.getFields().length; i++){
-            querySoFar = stringBuilder.append(em.getFields()[i].getName()).toString();
-            if( i != em.getFields().length - 1)
-                querySoFar = stringBuilder.append(", ").toString();
-            else
-                querySoFar = stringBuilder.append(" ").toString();
-        }
+    public Query condition(String condition) {
+        //TODO: create this based on expression & make option for AND or OR situations
         return this;
     }
-
-//    private String getSelectedColumns() {
-//        if (querySoFar.contains("*"))
-//            return "*";
-//        return null;
-//    }
 }

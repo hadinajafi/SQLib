@@ -1,14 +1,16 @@
 package query;
 
+import criteria.Selection;
+
 public interface Query {
 
-    Query select() throws Exception;
+    Query select(String[] columns);
+
+    Query select(Class clazz);
 
     Query from(String table) throws Exception;
 
-    Query all() throws Exception;
+    String getQueryString() throws Exception;
 
-    Query fieldsOf(Class<?> clazz) throws Exception;
-
-    String getQueryString();
+    Query condition(String condition);
 }
