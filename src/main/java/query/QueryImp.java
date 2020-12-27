@@ -1,27 +1,25 @@
 package query;
 
+import common.exception.InvalidQueryException;
 import common.exception.StatementValidator;
+import criteria.Condition;
 import criteria.Selection;
 import criteria.SelectionImp;
 
-import static common.exception.ExceptionMessageBuilder.messageBuilder;
-import static common.util.Constants.*;
+import static common.util.Constants.FROM;
 
 public class QueryImp implements Query {
 
-    private String querySoFar;
-    private Selection selection;
+    private final Selection selection;
 
     private final StringBuilder stringBuilder;
 
     private QueryImp() {
-        querySoFar = "";
         stringBuilder = new StringBuilder();
-        stringBuilder.append(querySoFar);
         selection = new SelectionImp();
     }
 
-    public static QueryImp createQuery(){
+    public static QueryImp createQuery() {
         return new QueryImp();
     }
 
@@ -29,7 +27,8 @@ public class QueryImp implements Query {
      * @return Query string so far created by builder
      */
     @Override
-    public String getQueryString() throws Exception {
+    public String getQueryString() {
+        String querySoFar = stringBuilder.toString();
         StatementValidator.verifyStatement(querySoFar);
         return querySoFar;
     }
@@ -39,7 +38,7 @@ public class QueryImp implements Query {
      */
     @Override
     public Query select(String... columns) {
-        querySoFar = stringBuilder.append(selection.select(columns).getQueryString()).toString();
+        stringBuilder.append(selection.select(columns).getQueryString()).toString();
         return this;
     }
 
@@ -49,9 +48,8 @@ public class QueryImp implements Query {
         return this;
     }
 
-    private Query fieldsOf(Class object) {
-        querySoFar = stringBuilder.append(selection.select(object).getQueryString()).toString();
-        return this;
+    private void fieldsOf(Class object) {
+        stringBuilder.append(selection.select(object).getQueryString()).toString();
     }
 
     /**
@@ -59,15 +57,15 @@ public class QueryImp implements Query {
      * @return This
      */
     @Override
-    public Query from(String table) throws Exception {
-        querySoFar = stringBuilder.append(FROM).append(" ").append(table).append(" ").toString();
-        StatementValidator.verifyStatement(querySoFar);
+    public Query from(String table) throws InvalidQueryException {
+        stringBuilder.append(FROM).append(" ").append(table).append(" ").toString();
+        StatementValidator.verifyStatement(stringBuilder.toString());
         return this;
     }
 
     @Override
-    public Query condition(String condition) {
-        //TODO: create this based on expression & make option for AND or OR situations
+    public Query where(Condition condition) {
+        stringBuilder.append(condition.getConditionString()).toString();
         return this;
     }
 }

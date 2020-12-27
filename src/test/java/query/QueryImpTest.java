@@ -1,11 +1,14 @@
 package query;
 
+import common.exception.InvalidQueryException;
+import criteria.ConditionImp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static common.util.Constants.*;
+import static criteria.ConditionImp.createConditions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -19,21 +22,21 @@ class QueryImpTest {
     }
 
     @Test
-    @Disabled
-    void createEmptyQueryShouldReturnsEmpty() throws Exception {
-        assertEquals("", query.getQueryString());
+    void createEmptyQueryShouldReturnsEmpty() {
+        Exception ex = assertThrows(InvalidQueryException.class, () -> query.getQueryString());
+        assertEquals(MISSING_SELECTION_PROCEDURES, ex.getMessage());
     }
 
     @Test
     void selectTwiceShouldThrowException() {
         Exception ex = assertThrows(Exception.class, () -> query.select(new String[]{"*"}).select(new String[]{"*"}).getQueryString());
-        assertEquals("Invalid query statement!", ex.getMessage());
+        assertEquals(MISSING_FROM_PROCEDURE, ex.getMessage());
     }
 
     @Test
-    void fromWithoutTableShouldThrowsException() {
-        Exception ex = assertThrows(Exception.class, () -> query.from(""));
-        assertEquals("Invalid query statement!", ex.getMessage());
+    void queryWithoutSelectionShouldThrowsException() {
+        Exception ex = assertThrows(InvalidQueryException.class, () -> query.from(""));
+        assertEquals(MISSING_SELECTION_PROCEDURES, ex.getMessage());
     }
 
     @Test
@@ -45,7 +48,7 @@ class QueryImpTest {
     @Test
     void fromBeforeSelectShouldThrowException() {
         Exception ex = assertThrows(Exception.class, () -> query.from("table").select(new String[]{"*"}));
-        assertEquals("Invalid query statement!", ex.getMessage());
+        assertEquals(MISSING_SELECTION_PROCEDURES, ex.getMessage());
     }
 
     @Test
@@ -57,13 +60,13 @@ class QueryImpTest {
     @Test
     void withoutColumnSelectionShouldThrowException() {
         Exception ex = assertThrows(Exception.class, () -> query.select(new String[]{""}).from("table"));
-        assertEquals("Invalid query statement!", ex.getMessage());
+        assertEquals(INVALID_QUERY, ex.getMessage());
     }
 
     @Test
     void selectAllColumnsWithoutFromStatementShouldThrowException() {
         Exception ex = assertThrows(Exception.class, () -> query.select(new String[]{"*"}).getQueryString());
-        assertEquals("Invalid query statement!", ex.getMessage());
+        assertEquals(MISSING_FROM_PROCEDURE, ex.getMessage());
     }
 
     @Test
@@ -74,9 +77,18 @@ class QueryImpTest {
 
     @Test
     void selectionWithClassAndWhereConditions() throws Exception {
-        query.select(test.class).from("table").condition("");
-
+        assertEquals("SELECT id, name FROM table WHERE id = 10 ", query
+                .select(test.class).from("table").where(createConditions().equalTo("id", 10)).getQueryString());
     }
+
+    @Test
+    void selectionWithNullConditionParameterShouldThrowsException() throws NullPointerException {
+        Exception ex = assertThrows(NullPointerException.class, () -> query
+                .select(test.class).from("table").where(createConditions().equalTo("id", null)));
+        assertEquals(PARAM_MISSING, ex.getMessage());
+    }
+
+
 
     @Data
     @AllArgsConstructor

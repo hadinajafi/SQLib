@@ -1,5 +1,6 @@
 package query;
 
+import criteria.Condition;
 import criteria.Selection;
 
 public interface Query {
@@ -12,5 +13,5 @@ public interface Query {
 
     String getQueryString() throws Exception;
 
-    Query condition(String condition);
+    Query where(Condition condition);
 }
