@@ -18,10 +18,10 @@ public class StatementValidator {
      * select id2, name from table
      */
     private static String selectionRegex =
-            "(SELECT|INSERT|DELETE|UPDATE).([*]|([A-z ]+[0-9]*)+|([A-z ]+[0-9]*[,]+[A-z ]+[0-9]*)+).(FROM).*";
+            "(SELECT|UPDATE|INSERT|DELETE) ((\\w+[,]|\\w+[,] )+\\w+|\\w+|\\w+[0-9]+|[*]) (FROM).*";
 
-    public static void verifyStatement(String statement) throws Exception{
+    public static void verifyStatement(String statement){
         if(!Pattern.matches(selectionRegex, statement))
-            throw new Exception("Invalid query statement!");
+            throw new InvalidQueryException(statement);
     }
 }
