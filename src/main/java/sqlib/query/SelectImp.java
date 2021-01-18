@@ -1,24 +1,26 @@
-package criteria;
+package sqlib.query;
 
-import query.EntityManager;
+import sqlib.EntityManager;
 
 import static common.util.Constants.SELECT;
 import static java.util.stream.IntStream.range;
-import static query.EntityManager.createEntityManager;
+import static sqlib.EntityManager.createEntityManager;
 
-public class SelectionImp implements Selection {
+public class SelectImp implements Select {
 
     private String querySoFar;
-    private StringBuilder builder;
+    private final StringBuilder builder;
     private EntityManager entityManager;
 
-    public SelectionImp() {
+    public SelectImp() {
         this.querySoFar = "";
         this.builder = new StringBuilder();
     }
 
     @Override
-    public Selection select(String... columns) {
+    public Select select(String... columns) {
+        if (columns == null || columns.length == 0)
+            throw new RuntimeException("Columns parameter was empty, failed to select data.");
         builder.append(SELECT).append(" ");
         range(0, columns.length).forEach(i -> {
             builder.append(columns[i]);
@@ -32,15 +34,17 @@ public class SelectionImp implements Selection {
     }
 
     @Override
-    public Selection select(Class clazz) {
+    public Select select(Class clazz) {
         entityManager = createEntityManager(clazz);
+        if (entityManager.getFields().length == 0)
+            throw new RuntimeException("The provided class has no attributes, selection failed!");
         builder.append(SELECT).append(" ");
         range(0, entityManager.getFields().length).forEach(i -> {
-            builder.append(entityManager.getFields()[i].getName()).toString();
+            builder.append(entityManager.getFields()[i].getName());
             if (i != entityManager.getFields().length - 1)
-                builder.append(", ").toString();
+                builder.append(", ");
             else
-                builder.append(" ").toString();
+                builder.append(" ");
         });
         querySoFar = builder.toString();
         return this;
