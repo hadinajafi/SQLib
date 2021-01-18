@@ -1,12 +1,11 @@
-package query;
+package sqlib;
 
 import lombok.Data;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static query.EntityManager.createEntityManager;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static sqlib.EntityManager.createEntityManager;
 
 class EntityManagerTest {
 
