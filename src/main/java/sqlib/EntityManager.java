@@ -31,4 +31,8 @@ public class EntityManager {
     public void setFields(Field[] fields) {
         this.fields = fields;
     }
+
+    public String getClassName() {
+        return this.clazz.getSimpleName();
+    }
 }

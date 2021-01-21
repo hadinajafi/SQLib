@@ -14,12 +14,12 @@ public class CriteriaQuery {
     private String querySoFar;
 
     public CriteriaQuery select(Result result) {
-        querySoFar = selection.select(result.getColumnNames()).getQueryString();
+        querySoFar = selection.select(result.getClassName(), result.getColumnNames()).getQueryString();
         return this;
     }
 
-    public CriteriaQuery selectAny() {
-        querySoFar = selection.select("*").getQueryString();
+    public CriteriaQuery selectAny(Result result) {
+        querySoFar = selection.select(result.getClassName(), "*").getQueryString();
         return this;
     }
 

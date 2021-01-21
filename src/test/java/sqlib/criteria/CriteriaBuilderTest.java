@@ -2,23 +2,19 @@ package sqlib.criteria;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import sqlib.connection.DbConnection;
-import sqlib.connection.DbConnectionImp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CriteriaBuilderTest {
 
     private CriteriaBuilder builder;
-    private DbConnection connection;
-    private Result<TestClass> result;
+    private Result<Student> result;
     private CriteriaQuery query;
 
     @BeforeEach
     void init() {
-        connection = new DbConnectionImp("test.db");
         builder = CriteriaBuilder.createConnection();
-        result = new Result<>(TestClass.class);
+        result = new Result<>(Student.class);
         query = new CriteriaQuery();
     }
 
@@ -32,13 +28,62 @@ class CriteriaBuilderTest {
         predicate2.greaterThan("id", 3000);
         assertEquals("id > 3000 ", predicate2.getConditionString());
 
-        System.out.println(query.selectAny().where(builder.and(predicate1, predicate2)
+        System.out.println(query.selectAny(result).where(builder.and(predicate1, predicate2)
                 .getCompoundPredicateQueryString()).getQueryString());
 
     }
 
-    class TestClass {
+    @Test
+    void withoutPredicateShouldWork() {
+        String q = query.selectAny(result).getQueryString();
+        assertEquals("SELECT * FROM Student", q.trim());
+    }
+
+    @Test
+    void reInitResultWithChildClassShouldWork() {
+        var result = new Result<>(Child.class);
+        assertEquals("SELECT * FROM Child ", query.selectAny(result).getQueryString());
+    }
+
+    @Test
+    void selectingWithProperColumns() {
+        assertEquals("SELECT id, name, age, average FROM Student", query
+                .select(result).getQueryString().trim());
+    }
+
+    @Test
+    void selectingProperColumnsOfChildClass() {
+        var fromChild = new Result<>(Child.class);
+        assertEquals("SELECT code FROM Child", query
+                .select(fromChild).getQueryString().trim());
+    }
+
+    @Test
+    void selectingWithOnePredication() {
+        Predicate p = new Predicate();
+        String condition = p.equal(result.get("name"), "Hadi").getConditionString();
+        assertEquals("SELECT * FROM Student WHERE name = 'Hadi'", query
+                .selectAny(result).where(condition).getQueryString().trim());
+    }
+
+    @Test
+    void selectingWithTwoPredicates() {
+        Predicate predicate1 = new Predicate().equal(result.get("age"), 20);
+        Predicate predicate2 = new Predicate().greaterThan(result.get("average"), 13.4);
+        String condition = builder.and(predicate1, predicate2).getCompoundPredicateQueryString();
+        assertEquals("SELECT * FROM Student WHERE age = 20 AND average > 13.4",
+                query.selectAny(result).where(condition).getQueryString());
+    }
+
+    static class Student {
         private int id;
+        private String name;
+        private Integer age;
+        private double average;
+    }
+
+    static class Child extends Student {
+        private String code;
     }
 
 }

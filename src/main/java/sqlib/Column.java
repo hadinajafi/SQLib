@@ -7,16 +7,25 @@ package sqlib;
 public class Column {
 
     private String name;
+    private String type;
 
-    public Column(String name) {
+    public Column(String name, String type) {
         this.name = name;
+        this.type = type;
     }
 
+    /**
+     * @return Column name
+     */
     public String getName() {
         return name;
     }
 
-    public static Column set(String name) {
-        return new Column(name);
+    public static Column set(String name, String type) {
+        return new Column(name, type);
+    }
+
+    public String getType() {
+        return type;
     }
 }

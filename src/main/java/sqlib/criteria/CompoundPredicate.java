@@ -9,14 +9,13 @@ import static common.util.Constants.OR;
 
 public class CompoundPredicate extends Predicate {
 
-    public Predicate and(Predicate predicate1, Predicate predicate2) {
-        conditionString = condition.createPredicateClause(AND, predicate1.toString(), predicate2.toString())
-                .getConditionString();
+    public Predicate and(Predicate... predicates) {
+        conditionString = condition.createPredicateClause(AND, predicates).getConditionString();
         return this;
     }
 
-    public Predicate or(String... parameters) {
-        conditionString = condition.createPredicateClause(OR, parameters).getConditionString();
+    public Predicate or(Predicate... predicates) {
+        conditionString = condition.createPredicateClause(OR, predicates).getConditionString();
         return this;
     }
 }

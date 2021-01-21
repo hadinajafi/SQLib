@@ -1,5 +1,7 @@
 package sqlib.criteria;
 
+import sqlib.Column;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -35,15 +37,31 @@ public class Condition {
         String[] stringParameters = stringifyParameters(parameters);
         for (int i = 0; i < stringParameters.length; i++) {
             if (i == stringParameters.length - 1)
-                clause += stringParameters[i] + " ";
+                clause += stringParameters[i];
             else
                 clause += stringParameters[i] + " " + conjunction + " ";
+            clause.concat(" ");
         }
         return clause;
     }
 
     private String[] stringifyParameters(Object[] parameters) {
-        return Arrays.stream(parameters).map(String::valueOf).toArray(String[]::new);
+        String[] stringified = new String[parameters.length];
+        {
+        }
+        for (int i = 0; i < parameters.length; i++) {
+            if (parameters[i] instanceof String && !(parameters[i] instanceof Predicate))
+                stringified[i] = applyTypePreference((String) parameters[i]);
+            else if (parameters[i] instanceof Column)
+                stringified[i] = ((Column) parameters[i]).getName();
+            else
+                stringified[i] = String.valueOf(parameters[i]);
+        }
+        return stringified;
+    }
+
+    private String applyTypePreference(String parameter) {
+        return String.format("'%s'", parameter);
     }
 
     /**

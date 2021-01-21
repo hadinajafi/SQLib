@@ -1,7 +1,9 @@
 package sqlib.query;
 
+import common.exception.StatementValidator;
 import sqlib.EntityManager;
 
+import static common.util.Constants.FROM;
 import static common.util.Constants.SELECT;
 import static java.util.stream.IntStream.range;
 import static sqlib.EntityManager.createEntityManager;
@@ -18,7 +20,7 @@ public class SelectImp implements Select {
     }
 
     @Override
-    public Select select(String... columns) {
+    public Select select(String tableName, String... columns) {
         if (columns == null || columns.length == 0)
             throw new RuntimeException("Columns parameter was empty, failed to select data.");
         builder.append(SELECT).append(" ");
@@ -30,6 +32,7 @@ public class SelectImp implements Select {
                 builder.append(" ");
         });
         querySoFar = builder.toString();
+        addFromClause(tableName);
         return this;
     }
 
@@ -47,11 +50,17 @@ public class SelectImp implements Select {
                 builder.append(" ");
         });
         querySoFar = builder.toString();
+        addFromClause(entityManager.getClassName());
         return this;
     }
 
     @Override
     public String getQueryString() {
         return querySoFar;
+    }
+
+    private void addFromClause(String tableName) {
+        querySoFar = builder.append(FROM).append(" ").append(tableName).append(" ").toString();
+        StatementValidator.verifyStatement(querySoFar);
     }
 }

@@ -22,14 +22,13 @@ public class CriteriaBuilder {
         return null;
     }
 
-    public CriteriaBuilder and(Predicate predicate1, Predicate predicate2) {
-//        this.compoundPredicate.and(predicate1, predicate2);
-        compoundPredicateQuery.append(compoundPredicate.and(predicate1, predicate2).getConditionString());
+    public CriteriaBuilder and(Predicate... predicates) {
+        compoundPredicateQuery.append(compoundPredicate.and(predicates).getConditionString());
         return this;
     }
 
-    public CriteriaBuilder or(String... parameters) {
-        this.compoundPredicate.or(parameters);
+    public CriteriaBuilder or(Predicate... predicates) {
+        this.compoundPredicate.or(predicates);
         return this;
     }
 
