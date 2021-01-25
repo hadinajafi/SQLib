@@ -6,7 +6,7 @@ package sqlib.criteria;
 
 public class CriteriaBuilder {
 
-    private final Predicate predicate = new Predicate();
+    private final Predicate predicate = Predicate.createPredicate();
     private final CompoundPredicate compoundPredicate = new CompoundPredicate();
     private final StringBuilder compoundPredicateQuery = new StringBuilder();
 
