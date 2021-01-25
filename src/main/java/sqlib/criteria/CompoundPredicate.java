@@ -1,7 +1,8 @@
 package sqlib.criteria;
 
-import static common.util.Constants.AND;
-import static common.util.Constants.OR;
+
+import static sqlib.criteria.Conjunction.AND;
+import static sqlib.criteria.Conjunction.OR;
 
 /**
  * author: Hadi Najafi
@@ -10,12 +11,12 @@ import static common.util.Constants.OR;
 public class CompoundPredicate extends Predicate {
 
     public Predicate and(Predicate... predicates) {
-        conditionString = condition.createPredicateClause(AND, predicates).getConditionString();
+        condition.createPredicateClause(AND, predicates);
         return this;
     }
 
     public Predicate or(Predicate... predicates) {
-        conditionString = condition.createPredicateClause(OR, predicates).getConditionString();
+        condition.createPredicateClause(OR, predicates);
         return this;
     }
 }

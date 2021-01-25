@@ -15,16 +15,4 @@ public class Constants {
     public static String SELECT = "SELECT";
     public static String FROM = "FROM";
     public static String WHERE = "WHERE";
-
-    //    Predicate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    public static String EQUAL = "=";
-    public static String GREATER_THAN = ">";
-    public static String LESSER_THAN = "<";
-    public static String GREATER_EQUAL_THAN = ">=";
-    public static String LESSER_EQUAL_THAN = "<=";
-    public static String NOT_EQUAL = "<>";
-    public static String LIKE = "LIKE";
-    public static String BETWEEN = "BETWEEN";
-    public static String AND = "AND";
-    public static String OR = "OR";
 }
