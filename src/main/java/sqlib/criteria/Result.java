@@ -1,7 +1,7 @@
 package sqlib.criteria;
 
 import lombok.SneakyThrows;
-import sqlib.Column;
+import sqlib.query.Column;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ public class Result<T> {
 
     private final Class<T> clazz;
     private Column[] columns;
-    private String className;
+    private final String className;
 
     public Result(Class<T> clazz) {
         this.clazz = clazz;
@@ -49,5 +49,13 @@ public class Result<T> {
 
     public String getClassName() {
         return className;
+    }
+
+    public boolean hasFields() {
+        return columns.length != 0;
+    }
+
+    public int size() {
+        return columns.length;
     }
 }

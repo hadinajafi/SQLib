@@ -1,10 +1,12 @@
 package sqlib.query;
 
+import sqlib.criteria.Result;
+
 public interface Select {
 
     Select select(String table, String... columns);
 
-    Select select(Class clazz);
+    Select select(Result clazz);
 
     String getQueryString();
 }

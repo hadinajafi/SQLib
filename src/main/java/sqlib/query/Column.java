@@ -1,4 +1,4 @@
-package sqlib;
+package sqlib.query;
 
 /**
  * author: Hadi Najafi

@@ -10,14 +10,14 @@ public class StatementValidator {
 
     /**
      * Samples:
-     *
+     * <p>
      * select * from table
      * select id from table
      * select id, age, name from table
      * select id2 from table
      * select id2, name from table
      */
-    private static String selectionRegex =
+    private final static String selectionRegex =
             "(SELECT|UPDATE|INSERT|DELETE) ((\\w+[,]|\\w+[,] )+\\w+|\\w+|\\w+[0-9]+|[*]) (FROM).*";
 
     public static void verifyStatement(String statement){

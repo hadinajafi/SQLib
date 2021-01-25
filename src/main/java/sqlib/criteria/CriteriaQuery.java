@@ -1,8 +1,8 @@
 package sqlib.criteria;
 
+import common.util.Constants;
 import sqlib.query.Select;
 import sqlib.query.SelectImp;
-import sqlib.query.Where;
 
 /**
  * author: Hadi Najafi
@@ -30,5 +30,13 @@ public class CriteriaQuery {
 
     public String getQueryString() {
         return querySoFar;
+    }
+
+}
+
+class Where {
+
+    public static String where(String compoundPredicate) {
+        return Constants.WHERE + " " + compoundPredicate;
     }
 }

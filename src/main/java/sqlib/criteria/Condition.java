@@ -1,6 +1,6 @@
 package sqlib.criteria;
 
-import sqlib.Column;
+import sqlib.query.Column;
 
 import static common.util.Constants.PARAM_MISSING;
 
