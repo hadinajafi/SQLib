@@ -1,9 +1,12 @@
 package sqlib.criteria;
 
+import common.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static sqlib.criteria.Predicate.createPredicate;
 
 class CriteriaBuilderTest {
 
@@ -16,21 +19,6 @@ class CriteriaBuilderTest {
         builder = CriteriaBuilder.createConnection();
         result = new Result<>(Student.class);
         query = new CriteriaQuery();
-    }
-
-    @Test
-    void test() {
-        Predicate predicate1 = new Predicate();
-        predicate1.equal("id", 1000);
-        assertEquals("id = 1000 ", predicate1.getConditionString());
-
-        Predicate predicate2 = new Predicate();
-        predicate2.greaterThan("id", 3000);
-        assertEquals("id > 3000 ", predicate2.getConditionString());
-
-        System.out.println(query.selectAny(result).where(builder.and(predicate1, predicate2)
-                .getCompoundPredicateQueryString()).getQueryString());
-
     }
 
     @Test
@@ -60,20 +48,37 @@ class CriteriaBuilderTest {
 
     @Test
     void selectingWithOnePredication() {
-        Predicate p = new Predicate();
+        Predicate p = createPredicate();
         String condition = p.equal(result.get("name"), "Hadi").getConditionString();
         assertEquals("SELECT * FROM Student WHERE name = 'Hadi'", query
-                .selectAny(result).where(condition).getQueryString().trim());
+                .selectAny(result).where(condition).getQueryString());
     }
 
     @Test
     void selectingWithTwoPredicates() {
-        Predicate predicate1 = new Predicate().equal(result.get("age"), 20);
-        Predicate predicate2 = new Predicate().greaterThan(result.get("average"), 13.4);
+        Predicate predicate1 = createPredicate().equal(result.get("age"), 20);
+        Predicate predicate2 = createPredicate().greaterThan(result.get("average"), 13.4);
         String condition = builder.and(predicate1, predicate2).getCompoundPredicateQueryString();
         assertEquals("SELECT * FROM Student WHERE age = 20 AND average > 13.4",
                 query.selectAny(result).where(condition).getQueryString());
     }
+
+    @Test
+    void twoChainActionWithSamePredicateInstance() {
+        Predicate predicate = createPredicate().equal(result.get("id"), 20);
+        assertEquals("id = 20", predicate.getConditionString());
+        //add another chain action should override the first one.
+        predicate.greaterThan(result.get("id"), 10);
+        assertEquals("id > 10", predicate.getConditionString());
+    }
+
+    @Test
+    void sendNullForPredicateShouldThrowError() {
+        NullPointerException ex =
+                assertThrows(NullPointerException.class, () -> createPredicate().equal(result.get("id"), null));
+        assertEquals(Constants.PARAM_MISSING, ex.getMessage());
+    }
+
 
     static class Student {
         private int id;
