@@ -22,6 +22,6 @@ public class StatementValidator {
 
     public static void verifyStatement(String statement){
         if(!Pattern.matches(selectionRegex, statement))
-            throw new InvalidQueryException(statement);
+            throw new SQLibException(statement, true);
     }
 }

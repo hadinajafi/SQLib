@@ -2,7 +2,6 @@ package sqlib.criteria;
 
 import common.util.Constants;
 import sqlib.query.Select;
-import sqlib.query.SelectImp;
 
 /**
  * author: Hadi Najafi
@@ -10,7 +9,7 @@ import sqlib.query.SelectImp;
 
 public class CriteriaQuery {
 
-    private final Select selection = new SelectImp();
+    private final Select selection = new Select();
     private String querySoFar;
 
     public CriteriaQuery select(Result result) {

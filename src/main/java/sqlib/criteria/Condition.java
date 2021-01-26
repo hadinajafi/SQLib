@@ -1,5 +1,6 @@
 package sqlib.criteria;
 
+import common.exception.SQLibException;
 import sqlib.query.Column;
 
 import static common.util.Constants.PARAM_MISSING;
@@ -26,7 +27,7 @@ public class Condition {
     private void checkParametersNullability(Object... objects) {
         for (Object o : objects) {
             if (o == null) {
-                throw new NullPointerException(PARAM_MISSING);
+                throw new SQLibException(PARAM_MISSING);
             }
         }
     }
