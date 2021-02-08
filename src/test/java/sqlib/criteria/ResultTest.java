@@ -14,10 +14,10 @@ class ResultTest {
         assertEquals("[id, age, name]", Arrays.toString(result.getColumnNames()));
     }
 
-    class TestClazz {
-        private long id;
-        private Integer age;
-        private String name;
-    }
+}
 
+class TestClazz {
+    private final long id = 1;
+    private static Integer age;
+    private String name;
 }

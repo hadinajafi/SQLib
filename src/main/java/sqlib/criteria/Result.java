@@ -1,6 +1,5 @@
 package sqlib.criteria;
 
-import lombok.SneakyThrows;
 import sqlib.query.Column;
 
 import java.lang.reflect.Field;
@@ -38,8 +37,7 @@ public class Result<T> {
         return names;
     }
 
-    @SneakyThrows
-    public Column get(String attribute) {
+    public Column get(String attribute) throws Exception {
         for (Column col : columns)
             if (col.getName().equals(attribute)) {
                 return col;

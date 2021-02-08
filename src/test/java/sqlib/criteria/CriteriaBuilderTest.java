@@ -1,5 +1,6 @@
 package sqlib.criteria;
 
+import common.exception.SQLibException;
 import common.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ class CriteriaBuilderTest {
     }
 
     @Test
-    void selectingWithOnePredication() {
+    void selectingWithOnePredication() throws Exception {
         Predicate p = createPredicate();
         String condition = p.equal(result.get("name"), "Hadi").getConditionString();
         assertEquals("SELECT * FROM Student WHERE name = 'Hadi'", query
@@ -55,7 +56,7 @@ class CriteriaBuilderTest {
     }
 
     @Test
-    void selectingWithTwoPredicates() {
+    void selectingWithTwoPredicates() throws Exception {
         Predicate predicate1 = createPredicate().equal(result.get("age"), 20);
         Predicate predicate2 = createPredicate().greaterThan(result.get("average"), 13.4);
         String condition = builder.and(predicate1, predicate2).getCompoundPredicateQueryString();
@@ -64,7 +65,7 @@ class CriteriaBuilderTest {
     }
 
     @Test
-    void twoChainActionWithSamePredicateInstance() {
+    void twoChainActionWithSamePredicateInstance() throws Exception {
         Predicate predicate = createPredicate().equal(result.get("id"), 20);
         assertEquals("id = 20", predicate.getConditionString());
         //add another chain action should override the first one.
@@ -74,8 +75,8 @@ class CriteriaBuilderTest {
 
     @Test
     void sendNullForPredicateShouldThrowError() {
-        NullPointerException ex =
-                assertThrows(NullPointerException.class, () -> createPredicate().equal(result.get("id"), null));
+        SQLibException ex =
+                assertThrows(SQLibException.class, () -> createPredicate().equal(result.get("id"), null));
         assertEquals(Constants.PARAM_MISSING, ex.getMessage());
     }
 
