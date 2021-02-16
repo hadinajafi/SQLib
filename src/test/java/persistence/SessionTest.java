@@ -2,13 +2,20 @@ package persistence;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import sqlib.criteria.CriteriaBuilder;
+import sqlib.criteria.Predicate;
 import sqlib.persistence.Session;
+import sqlib.query.Column;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static sqlib.criteria.CriteriaBuilder.createConnection;
+import static sqlib.criteria.Predicate.createPredicate;
 
 public class SessionTest {
 
     private Session session;
+    private String[] columns = {"name", "age", "average"};
+    private Object[] values = {"Hadi", 12, 23.4};
 
     @BeforeEach
     void init() {
@@ -19,14 +26,34 @@ public class SessionTest {
     void insertIntoWithValues() {
         session.insert("Student", 12, "Hadi", 1.2);
         assertEquals("INSERT INTO Student VALUES (12, 'Hadi', 1.2 )",
-                session.queryString());
+                session.getQueryString());
     }
 
     @Test
     void insertIntoWithSelectedColumns() {
-        session.insert("Student", new String[]{"name", "age", "average"},
-                new Object[]{"Hadi", 12, 23.4});
-        assertEquals("INSERT INTO Student (name, age, average ) VALUES ('Hadi', 12, 23.4 )", session.queryString());
+        session.insert("Student", columns, values);
+        assertEquals("INSERT INTO Student (name, age, average ) VALUES ('Hadi', 12, 23.4 )",
+                session.getQueryString());
+    }
+
+    @Test
+    void updateWithoutWhereClause(){
+        session.update("Student", columns, values);
+        assertEquals("UPDATE Student SET name='Hadi', age=12, average=23.4 ",
+                session.getQueryString());
+    }
+
+    @Test
+    void updateWithWhere(){
+        CriteriaBuilder builder = createConnection();
+        Predicate predicate1 = createPredicate().equal(new Column("age"), 20);
+        Predicate predicate2 = createPredicate().greaterThan(new Column("average"), 13.4);
+        String whereClause = builder.and(predicate1, predicate2).getCompoundPredicateQueryString();
+
+        assertEquals("UPDATE Student SET name='Hadi', age=12, " +
+                        "average=23.4 WHERE age = 20 AND average > 13.4",
+                session.update("Student", columns, values)
+                        .where(whereClause).getQueryString());
     }
 
 }

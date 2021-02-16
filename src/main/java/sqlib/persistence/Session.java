@@ -1,6 +1,9 @@
 package sqlib.persistence;
 
+import sqlib.criteria.CriteriaQuery;
 import sqlib.query.Insert;
+import sqlib.query.Update;
+import sqlib.query.Where;
 
 /**
  * author: Hadi Najafi
@@ -8,9 +11,12 @@ import sqlib.query.Insert;
 
 public class Session {
     private Insert insert;
+    private Update update;
+    private String queryStatement = "";
 
     public Session() {
-        this.insert = new Insert();
+        insert = new Insert();
+        update = new Update();
     }
 
     /**
@@ -21,15 +27,42 @@ public class Session {
     public void insert(String tableName, Object... values) throws PersistenceException {
         //TODO: CHECK open
         insert.insertInto(tableName, StringifyValues(values));
+        queryStatement = insert.getQueryString();
     }
 
-    public void insert(String table, String[] columns, Object[] values) throws PersistenceException {
+    /**
+     *
+     * @param tableName Insert values into table with this name.
+     * @param columns only selected columns will affected.
+     * @param values values must have the same length as columns.
+     * @throws PersistenceException Exception could happen through inserting
+     */
+    public void insert(String tableName, String[] columns, Object[] values) throws PersistenceException {
         //TODO: check open
-        insert.insertInto(table, columns, StringifyValues(values));
+        insert.insertInto(tableName, columns, StringifyValues(values));
+        queryStatement = update.getQueryString();
     }
 
-    public String queryString() {
-        return insert.getQueryString();
+    /**
+     *
+     * @param tableName Update values into table with this name.
+     * @param columns only selected columns will be affected.
+     * @param values values must have the same length as columns.
+     * @throws PersistenceException Exception could happen through inserting
+     */
+    public Session update(String tableName, String[] columns, Object[] values) throws PersistenceException{
+        update.update(tableName, columns, StringifyValues(values));
+        queryStatement = update.getQueryString();
+        return this;
+    }
+
+    public Session where(String compoundPredicate) {
+        queryStatement += Where.where(compoundPredicate);
+        return this;
+    }
+
+    public String getQueryString() {
+        return queryStatement;
     }
 
     private String[] StringifyValues(Object[] values) {

@@ -20,4 +20,9 @@ public abstract class Query {
         if (!result.hasFields())
             throw new SQLibException("The provided class has no attributes, selection failed!");
     }
+
+    protected void validateParametersLength(Object[] columns, Object[] values){
+        if(columns.length != values.length)
+            throw new SQLibException("Number of values is not same as number of columns");
+    }
 }

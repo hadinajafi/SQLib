@@ -14,6 +14,10 @@ public class Column {
         this.type = type;
     }
 
+    public Column(String name){
+        this.name = name;
+    }
+
     /**
      * @return Column name
      */
