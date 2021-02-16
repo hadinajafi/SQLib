@@ -37,14 +37,14 @@ public class SessionTest {
     }
 
     @Test
-    void updateWithoutWhereClause(){
+    void updateWithoutWhereClause() {
         session.update("Student", columns, values);
         assertEquals("UPDATE Student SET name='Hadi', age=12, average=23.4 ",
                 session.getQueryString());
     }
 
     @Test
-    void updateWithWhere(){
+    void updateWithWhere() {
         CriteriaBuilder builder = createConnection();
         Predicate predicate1 = createPredicate().equal(new Column("age"), 20);
         Predicate predicate2 = createPredicate().greaterThan(new Column("average"), 13.4);
@@ -54,6 +54,21 @@ public class SessionTest {
                         "average=23.4 WHERE age = 20 AND average > 13.4",
                 session.update("Student", columns, values)
                         .where(whereClause).getQueryString());
+    }
+
+    @Test
+    void deleteAllRecords() {
+        assertEquals("DELETE FROM Student", session.delete("Student").getQueryString());
+    }
+
+    @Test
+    void deleteWithCondition() {
+        CriteriaBuilder builder = createConnection();
+        Predicate predicate1 = createPredicate().equal(new Column("age"), 20);
+        String whereClause = predicate1.toString();
+
+        assertEquals("DELETE FROM Student WHERE age = 20",
+                session.delete("Student").where(whereClause).getQueryString());
     }
 
 }

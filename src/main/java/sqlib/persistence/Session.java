@@ -1,6 +1,6 @@
 package sqlib.persistence;
 
-import sqlib.criteria.CriteriaQuery;
+import sqlib.query.Delete;
 import sqlib.query.Insert;
 import sqlib.query.Update;
 import sqlib.query.Where;
@@ -12,11 +12,13 @@ import sqlib.query.Where;
 public class Session {
     private Insert insert;
     private Update update;
+    private Delete delete;
     private String queryStatement = "";
 
     public Session() {
         insert = new Insert();
         update = new Update();
+        delete = new Delete();
     }
 
     /**
@@ -31,32 +33,41 @@ public class Session {
     }
 
     /**
-     *
      * @param tableName Insert values into table with this name.
-     * @param columns only selected columns will affected.
-     * @param values values must have the same length as columns.
+     * @param columns   only selected columns will affected.
+     * @param values    values must have the same length as columns.
      * @throws PersistenceException Exception could happen through inserting
      */
-    public void insert(String tableName, String[] columns, Object[] values) throws PersistenceException {
+    public void insert(String tableName, String[] columns, Object[] values)
+            throws PersistenceException {
         //TODO: check open
         insert.insertInto(tableName, columns, StringifyValues(values));
-        queryStatement = update.getQueryString();
+        queryStatement = insert.getQueryString();
     }
 
     /**
-     *
      * @param tableName Update values into table with this name.
-     * @param columns only selected columns will be affected.
-     * @param values values must have the same length as columns.
+     * @param columns   only selected columns will be affected.
+     * @param values    values must have the same length as columns.
      * @throws PersistenceException Exception could happen through inserting
      */
-    public Session update(String tableName, String[] columns, Object[] values) throws PersistenceException{
+    public Session update(String tableName, String[] columns, Object[] values)
+            throws PersistenceException {
         update.update(tableName, columns, StringifyValues(values));
         queryStatement = update.getQueryString();
         return this;
     }
 
+    public Session delete(String tableName)
+            throws PersistenceException {
+        delete.deleteFrom(tableName);
+        queryStatement = delete.getQueryString();
+        return this;
+    }
+
     public Session where(String compoundPredicate) {
+        queryStatement  = queryStatement.trim();
+        queryStatement += " ";
         queryStatement += Where.where(compoundPredicate);
         return this;
     }

@@ -21,7 +21,6 @@ public class Insert extends Query {
         querySoFar = builder.append(INSERT).append(" ").append(table).append(" ")
                 .append(generateValuesStatement(columns)).append(" ").append(VALUES)
                 .append(" ").append(generateValuesStatement(values)).toString();
-
     }
 
     private String generateValuesStatement(String[] parameter) {
