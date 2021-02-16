@@ -13,25 +13,22 @@ import static java.util.stream.IntStream.range;
 public class Insert extends Query {
 
     public void insertInto(String table, String... values) {
-        querySoFar = builder.append(INSERT).append(" ").append(table)
-                .append(" ").append(VALUES).append(" (")
-                .append(generateValuesStatement(values))
-                .append(")").toString();
+        querySoFar = builder.append(INSERT).append(" ")
+                .append(table).append(" ").append(VALUES)
+                .append(generateValuesStatement(values)).toString();
     }
 
     public void insertInto(String table, String[] columns, String[] values) {
         insertValidation(columns, values);
-        querySoFar = builder.append(INSERT).append(" ").append(table)
-                .append(" ").append("(")
-                .append(generateValuesStatement(columns)).append(") ")
-                .append(VALUES).append(" (")
-                .append(generateValuesStatement(values))
-                .append(")").toString();
+        querySoFar = builder.append(INSERT).append(" ").append(table).append(" ")
+                .append(generateValuesStatement(columns)).append(VALUES)
+                .append(generateValuesStatement(values)) .toString();
 
     }
 
     private String generateValuesStatement(String[] parameter) {
         StringBuilder statement = new StringBuilder();
+        statement.append(" (");
         range(0, parameter.length).forEach(i -> {
             statement.append(parameter[i]);
             if (i != parameter.length - 1)
@@ -39,6 +36,7 @@ public class Insert extends Query {
             else
                 statement.append(" ");
         });
+        statement.append(")");
         return statement.toString();
     }
 
