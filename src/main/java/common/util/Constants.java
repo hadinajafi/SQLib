@@ -10,9 +10,4 @@ public class Constants {
     public static String MISSING_SELECTION_PROCEDURES = "Query is missing SELECT|UPDATE|INSERT|DELETE procedures";
     public static String MISSING_FROM_PROCEDURE = "Query is missing FROM procedure";
     public static String INVALID_QUERY = "Query is Invalid!";
-
-    //    Query ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    public static String SELECT = "SELECT";
-    public static String FROM = "FROM";
-    public static String WHERE = "WHERE";
 }
