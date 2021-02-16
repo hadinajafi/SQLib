@@ -1,6 +1,6 @@
 package sqlib.criteria;
 
-import common.util.Constants;
+import common.util.SQLConstants;
 import sqlib.query.Select;
 
 /**
@@ -36,6 +36,6 @@ public class CriteriaQuery {
 class Where {
 
     public static String where(String compoundPredicate) {
-        return Constants.WHERE + " " + compoundPredicate;
+        return SQLConstants.WHERE + " " + compoundPredicate;
     }
 }

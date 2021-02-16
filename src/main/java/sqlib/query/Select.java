@@ -1,9 +1,11 @@
 package sqlib.query;
 
 import common.exception.SQLibException;
+import common.exception.StatementValidator;
 import sqlib.criteria.Result;
 
-import static common.util.Constants.SELECT;
+import static common.util.SQLConstants.FROM;
+import static common.util.SQLConstants.SELECT;
 import static java.util.stream.IntStream.range;
 
 public class Select extends Query{
@@ -25,8 +27,7 @@ public class Select extends Query{
     }
 
     public Select select(Result result) {
-        if (!result.hasFields())
-            throw new SQLibException("The provided class has no attributes, selection failed!");
+        checkIfHasSchema(result);
         builder.append(SELECT).append(" ");
         range(0, result.size()).forEach(i -> {
             builder.append(result.getColumnNames()[i]);
@@ -38,5 +39,10 @@ public class Select extends Query{
         querySoFar = builder.toString();
         addFromClause(result.getClassName());
         return this;
+    }
+
+    private void addFromClause(String tableName) {
+        querySoFar = builder.append(FROM).append(" ").append(tableName).append(" ").toString();
+        StatementValidator.verifyStatement(querySoFar);
     }
 }

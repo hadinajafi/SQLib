@@ -45,6 +45,10 @@ public class Result<T> {
         throw new Exception("Column " + attribute + " is not defined in this class!");
     }
 
+    /**
+     * Used for table name
+     * @return class name
+     */
     public String getClassName() {
         return className;
     }
