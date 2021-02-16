@@ -2,6 +2,7 @@ package sqlib.criteria;
 
 import common.util.SQLConstants;
 import sqlib.query.Select;
+import sqlib.query.Where;
 
 /**
  * author: Hadi Najafi
@@ -31,11 +32,4 @@ public class CriteriaQuery {
         return querySoFar;
     }
 
-}
-
-class Where {
-
-    public static String where(String compoundPredicate) {
-        return SQLConstants.WHERE + " " + compoundPredicate;
-    }
 }
