@@ -1,4 +1,4 @@
-package sqlib.persistence;
+package common.exception;
 
 public class PersistenceException extends RuntimeException{
 
