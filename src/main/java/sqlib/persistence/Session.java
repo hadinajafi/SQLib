@@ -1,5 +1,6 @@
 package sqlib.persistence;
 
+import common.exception.PersistenceException;
 import sqlib.query.Delete;
 import sqlib.query.Insert;
 import sqlib.query.Update;
