@@ -2,6 +2,7 @@ package sqlib.query;
 
 import common.exception.SQLibException;
 import sqlib.criteria.Result;
+import sqlib.query.internal.Options;
 
 import static common.util.SQLConstants.FROM;
 import static common.util.SQLConstants.SELECT;

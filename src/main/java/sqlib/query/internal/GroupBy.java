@@ -1,8 +1,9 @@
-package sqlib.query;
+package sqlib.query.internal;
 
 import common.util.SQLConstants;
+import sqlib.query.Query;
 
-public class GroupBy extends Query{
+public class GroupBy extends Query {
 
     public String groupBy(String... columns){
         if(columns == null || columns.length == 0)

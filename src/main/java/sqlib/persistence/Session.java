@@ -4,7 +4,7 @@ import common.exception.PersistenceException;
 import sqlib.query.Delete;
 import sqlib.query.Insert;
 import sqlib.query.Update;
-import sqlib.query.Where;
+import sqlib.query.internal.Where;
 
 /**
  * author: Hadi Najafi

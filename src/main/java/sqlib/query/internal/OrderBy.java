@@ -1,6 +1,7 @@
-package sqlib.query;
+package sqlib.query.internal;
 
 import common.exception.SQLibException;
+import sqlib.query.Query;
 
 import static common.util.SQLConstants.ORDER_BY;
 

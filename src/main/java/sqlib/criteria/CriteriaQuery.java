@@ -1,6 +1,7 @@
 package sqlib.criteria;
 
 import sqlib.query.*;
+import sqlib.query.internal.*;
 
 import static sqlib.query.functions.SqlFunctions.*;
 
@@ -75,6 +76,11 @@ public class CriteriaQuery {
 
     public CriteriaQuery groupBy(String... columns) {
         querySoFar += group.groupBy(columns);
+        return this;
+    }
+
+    public CriteriaQuery having (String compoundPredicate){
+        querySoFar += Having.having(compoundPredicate);
         return this;
     }
 

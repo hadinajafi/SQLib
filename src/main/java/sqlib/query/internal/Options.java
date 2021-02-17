@@ -1,4 +1,4 @@
-package sqlib.query;
+package sqlib.query.internal;
 
 public enum Options {
 

@@ -1,5 +1,6 @@
 package sqlib.criteria;
 
+import common.exception.SQLibException;
 import sqlib.query.Column;
 
 import java.lang.reflect.Field;
@@ -37,12 +38,12 @@ public class Result<T> {
         return names;
     }
 
-    public Column get(String attribute) throws Exception {
+    public Column get(String attribute) {
         for (Column col : columns)
             if (col.getName().equals(attribute)) {
                 return col;
             }
-        throw new Exception("Column " + attribute + " is not defined in this class!");
+        throw new SQLibException("Column " + attribute + " is not defined in this class!");
     }
 
     /**
