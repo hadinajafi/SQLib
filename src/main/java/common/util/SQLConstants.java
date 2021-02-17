@@ -6,6 +6,7 @@ public class SQLConstants {
     public static String UPDATE = "UPDATE";
     public static String INSERT = "INSERT INTO";
     public static String DELETE = "DELETE";
+    public static String ORDER_BY = "ORDER BY";
 
     public static String VALUES = "VALUES";
     public static String FROM = "FROM";

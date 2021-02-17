@@ -3,10 +3,8 @@ package sqlib.query;
 import common.exception.SQLibException;
 import sqlib.criteria.Result;
 
-import java.util.Optional;
-
-import static common.util.SQLConstants.*;
-import static java.util.stream.IntStream.range;
+import static common.util.SQLConstants.FROM;
+import static common.util.SQLConstants.SELECT;
 
 public class Select extends Query {
 
@@ -50,30 +48,6 @@ public class Select extends Query {
                 .append(generateStatement(result)).toString();
         addFromClause(result.getClassName());
         return this;
-    }
-
-    private String generateStatement(Result result) {
-        StringBuilder statementBuilder = new StringBuilder();
-        range(0, result.size()).forEach(i -> {
-            statementBuilder.append(result.getColumnNames()[i]);
-            if (i != result.size() - 1)
-                statementBuilder.append(", ");
-            else
-                statementBuilder.append(" ");
-        });
-        return statementBuilder.toString();
-    }
-
-    private String generateStatement(String... columns){
-        StringBuilder statementBuilder = new StringBuilder();
-        range(0, columns.length).forEach(i -> {
-            statementBuilder.append(columns[i]);
-            if (i != columns.length - 1)
-                statementBuilder.append(", ");
-            else
-                statementBuilder.append(" ");
-        });
-        return statementBuilder.toString();
     }
 
     private void addFromClause(String tableName) {
