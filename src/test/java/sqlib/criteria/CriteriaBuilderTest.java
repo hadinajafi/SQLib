@@ -5,6 +5,7 @@ import common.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sqlib.query.Column;
+import sqlib.query.Order;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -97,6 +98,21 @@ class CriteriaBuilderTest {
     void selectDistinctTest(){
         assertEquals("SELECT DISTINCT age, name FROM Student ",
                 query.selectDistinct("Student", "age", "name").getQueryString());
+    }
+
+    @Test
+    void selectOrderByTestASC(){
+        assertEquals("SELECT age, name FROM Student ORDER BY avg ASC",
+                query.select("Student", "age", "name")
+                        .orderBy(Order.ASC, "avg").getQueryString());
+    }
+
+    @Test
+    void selectOrderByMultipleOrders(){
+        assertEquals("SELECT age, name FROM Student ORDER BY grade, name ASC , age DESC ",
+                query.select("Student", "age", "name")
+                        .orderBy(Order.ASC, "grade", "name")
+                        .orderBy(Order.DESC, "age").getQueryString());
     }
 
 

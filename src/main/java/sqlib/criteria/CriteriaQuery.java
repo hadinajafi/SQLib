@@ -1,9 +1,8 @@
 package sqlib.criteria;
 
-import sqlib.query.Column;
-import sqlib.query.Options;
-import sqlib.query.Select;
-import sqlib.query.Where;
+import common.util.SQLConstants;
+import sqlib.query.*;
+
 import static sqlib.query.functions.SqlFunctions.*;
 
 /**
@@ -13,10 +12,16 @@ import static sqlib.query.functions.SqlFunctions.*;
 public class CriteriaQuery {
 
     private final Select selection = new Select();
+    private final OrderBy orderBy = new OrderBy();
     private String querySoFar;
 
     public CriteriaQuery select(Result result) {
         querySoFar = selection.select(result.getClassName(), result.getColumnNames()).getQueryString();
+        return this;
+    }
+
+    public CriteriaQuery select(String tableName, String... columns) {
+        querySoFar = selection.select(tableName, columns).getQueryString();
         return this;
     }
 
@@ -55,8 +60,16 @@ public class CriteriaQuery {
         return this;
     }
 
-    public CriteriaQuery selectDistinct(String tableName, String... columns){
+    public CriteriaQuery selectDistinct(String tableName, String... columns) {
         querySoFar = selection.select(tableName, columns, Options.DISTINCT).getQueryString();
+        return this;
+    }
+
+    public CriteriaQuery orderBy(Order order, String... columns) {
+        if(!querySoFar.contains("ORDER BY"))
+            querySoFar += orderBy.orderBy(order, columns).getQueryString();
+        else
+            querySoFar += orderBy.orderByWithoutKeyWord(order, columns).getQueryString();
         return this;
     }
 
