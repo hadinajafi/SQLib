@@ -10,4 +10,10 @@ public class SQLConstants {
     public static String FROM = "FROM";
     public static String WHERE = "WHERE";
     public static String SET = "SET";
+    // functions
+    public static String MIN = "MIN";
+    public static String MAX = "MAX";
+    public static String COUNT = "COUNT";
+    public static String AVG = "AVG";
+    public static String SUM = "SUM";
 }

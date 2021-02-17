@@ -6,20 +6,18 @@ package sqlib.criteria;
 
 public class CriteriaBuilder {
 
-    private final Predicate predicate = Predicate.createPredicate();
-    private final CompoundPredicate compoundPredicate = new CompoundPredicate();
-    private final StringBuilder compoundPredicateQuery = new StringBuilder();
+    private final Predicate predicate;
+    private final CompoundPredicate compoundPredicate;
+    private final StringBuilder compoundPredicateQuery;
 
     private CriteriaBuilder() {
-
+        predicate = Predicate.createPredicate();
+        compoundPredicate = new CompoundPredicate();
+        compoundPredicateQuery = new StringBuilder();
     }
 
-    public static CriteriaBuilder createConnection() {
+    public static CriteriaBuilder createBuilder() {
         return new CriteriaBuilder();
-    }
-
-    public CriteriaQuery createQuery() {
-        return null;
     }
 
     public CriteriaBuilder and(Predicate... predicates) {

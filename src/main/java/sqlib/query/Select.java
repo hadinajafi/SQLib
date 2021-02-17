@@ -43,6 +43,6 @@ public class Select extends Query{
 
     private void addFromClause(String tableName) {
         querySoFar = builder.append(FROM).append(" ").append(tableName).append(" ").toString();
-        StatementValidator.verifyStatement(querySoFar);
+//        StatementValidator.verifyStatement(querySoFar);
     }
 }

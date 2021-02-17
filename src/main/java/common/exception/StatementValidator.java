@@ -18,7 +18,7 @@ public class StatementValidator {
      * select id2, name from table
      */
     private final static String selectionRegex =
-            "(SELECT|DELETE) ((\\w+[,]|\\w+[,] )+\\w+|\\w+|\\w+[0-9]+|[*]) (FROM).*";
+            "(SELECT) ((\\w+[,]|\\w+[,] )+\\w+|\\w+|\\w+[0-9]+|[*]) (FROM).*";
 
     public static void verifyStatement(String statement){
         if(!Pattern.matches(selectionRegex, statement))
