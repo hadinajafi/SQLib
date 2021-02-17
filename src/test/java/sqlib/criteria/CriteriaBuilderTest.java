@@ -93,6 +93,12 @@ class CriteriaBuilderTest {
                 query.selectMin("student", new Column("income")).getQueryString());
     }
 
+    @Test
+    void selectDistinctTest(){
+        assertEquals("SELECT DISTINCT age, name FROM Student ",
+                query.selectDistinct("Student", "age", "name").getQueryString());
+    }
+
 
     static class Student {
         private int id;

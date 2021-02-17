@@ -2,6 +2,7 @@ package common.util;
 
 public class SQLConstants {
     public static String SELECT = "SELECT";
+    public static String DISTINCT = "DISTINCT";
     public static String UPDATE = "UPDATE";
     public static String INSERT = "INSERT INTO";
     public static String DELETE = "DELETE";
