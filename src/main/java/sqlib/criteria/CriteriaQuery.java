@@ -1,6 +1,5 @@
 package sqlib.criteria;
 
-import common.util.SQLConstants;
 import sqlib.query.*;
 
 import static sqlib.query.functions.SqlFunctions.*;
@@ -13,6 +12,7 @@ public class CriteriaQuery {
 
     private final Select selection = new Select();
     private final OrderBy orderBy = new OrderBy();
+    private final GroupBy group = new GroupBy();
     private String querySoFar;
 
     public CriteriaQuery select(Result result) {
@@ -66,10 +66,15 @@ public class CriteriaQuery {
     }
 
     public CriteriaQuery orderBy(Order order, String... columns) {
-        if(!querySoFar.contains("ORDER BY"))
+        if (!querySoFar.contains("ORDER BY"))
             querySoFar += orderBy.orderBy(order, columns).getQueryString();
         else
             querySoFar += orderBy.orderByWithoutKeyWord(order, columns).getQueryString();
+        return this;
+    }
+
+    public CriteriaQuery groupBy(String... columns) {
+        querySoFar += group.groupBy(columns);
         return this;
     }
 

@@ -10,6 +10,7 @@ import sqlib.query.Order;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static sqlib.criteria.Predicate.createPredicate;
+import static sqlib.query.functions.SqlFunctions.COUNT;
 
 class CriteriaBuilderTest {
 
@@ -83,36 +84,50 @@ class CriteriaBuilderTest {
     }
 
     @Test
-    void selectMaxOfColumn(){
+    void selectMaxOfColumn() {
         assertEquals("SELECT MAX(age) FROM Student ",
                 query.selectMax("Student", new Column("age")).getQueryString());
     }
 
     @Test
-    void selectMinOfColumn(){
+    void selectMinOfColumn() {
         assertEquals("SELECT MIN(income) FROM student ",
                 query.selectMin("student", new Column("income")).getQueryString());
     }
 
     @Test
-    void selectDistinctTest(){
+    void selectDistinctTest() {
         assertEquals("SELECT DISTINCT age, name FROM Student ",
                 query.selectDistinct("Student", "age", "name").getQueryString());
     }
 
     @Test
-    void selectOrderByTestASC(){
-        assertEquals("SELECT age, name FROM Student ORDER BY avg ASC",
+    void selectOrderByTestASC() {
+        assertEquals("SELECT age, name FROM Student ORDER BY avg ASC ",
                 query.select("Student", "age", "name")
                         .orderBy(Order.ASC, "avg").getQueryString());
     }
 
     @Test
-    void selectOrderByMultipleOrders(){
+    void selectOrderByMultipleOrders() {
         assertEquals("SELECT age, name FROM Student ORDER BY grade, name ASC , age DESC ",
                 query.select("Student", "age", "name")
                         .orderBy(Order.ASC, "grade", "name")
                         .orderBy(Order.DESC, "age").getQueryString());
+    }
+
+    @Test
+    void groupByTest() {
+        assertEquals("SELECT age, name FROM Student GROUP BY age ",
+                query.select("Student", "age", "name")
+                        .groupBy("age").getQueryString());
+    }
+
+    @Test
+    void groupByAndOrderByTest() {
+        assertEquals("SELECT age FROM Student GROUP BY age ORDER BY COUNT(age) DESC ",
+                query.select("Student", "age")
+                        .groupBy("age").orderBy(Order.DESC, COUNT(new Column("age"))).getQueryString());
     }
 
 
