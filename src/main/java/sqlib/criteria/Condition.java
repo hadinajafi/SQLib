@@ -49,7 +49,7 @@ public class Condition {
         {
         }
         for (int i = 0; i < parameters.length; i++) {
-            if (parameters[i] instanceof String && !(parameters[i] instanceof Predicate))
+            if (i != 0 && parameters[i] instanceof String && !(parameters[i] instanceof Predicate))
                 stringified[i] = applyTypePreference((String) parameters[i]);
             else if (parameters[i] instanceof Column)
                 stringified[i] = ((Column) parameters[i]).getName();

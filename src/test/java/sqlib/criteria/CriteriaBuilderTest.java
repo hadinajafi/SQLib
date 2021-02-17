@@ -5,7 +5,7 @@ import common.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sqlib.query.Column;
-import sqlib.query.Order;
+import sqlib.query.internal.Order;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -51,7 +51,7 @@ class CriteriaBuilderTest {
     }
 
     @Test
-    void selectingWithOnePredication() throws Exception {
+    void selectingWithOnePredication() {
         Predicate p = createPredicate();
         String condition = p.equal(result.get("name"), "Hadi").getConditionString();
         assertEquals("SELECT * FROM Student WHERE name = 'Hadi'", query
@@ -59,7 +59,7 @@ class CriteriaBuilderTest {
     }
 
     @Test
-    void selectingWithTwoPredicates() throws Exception {
+    void selectingWithTwoPredicates() {
         Predicate predicate1 = createPredicate().equal(result.get("age"), 20);
         Predicate predicate2 = createPredicate().greaterThan(result.get("average"), 13.4);
         String condition = builder.and(predicate1, predicate2).getCompoundPredicateQueryString();
@@ -68,7 +68,7 @@ class CriteriaBuilderTest {
     }
 
     @Test
-    void twoChainActionWithSamePredicateInstance() throws Exception {
+    void twoChainActionWithSamePredicateInstance() {
         Predicate predicate = createPredicate().equal(result.get("id"), 20);
         assertEquals("id = 20", predicate.getConditionString());
         //add another chain action should override the first one.
@@ -128,6 +128,15 @@ class CriteriaBuilderTest {
         assertEquals("SELECT age FROM Student GROUP BY age ORDER BY COUNT(age) DESC ",
                 query.select("Student", "age")
                         .groupBy("age").orderBy(Order.DESC, COUNT(new Column("age"))).getQueryString());
+    }
+
+    @Test
+    void havingTest() {
+        Predicate predicate1 = createPredicate().greaterThan(COUNT(new Column("age")), 5);
+
+        assertEquals("SELECT COUNT(age), name FROM Student GROUP BY age HAVING COUNT(age) > 5",
+                query.select("Student", COUNT(new Column("age")), "name")
+                        .groupBy("age").having(predicate1.getConditionString()).getQueryString());
     }
 
 
