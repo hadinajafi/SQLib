@@ -4,6 +4,7 @@ import common.exception.SQLibException;
 import common.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import sqlib.query.Column;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,7 +18,7 @@ class CriteriaBuilderTest {
 
     @BeforeEach
     void init() {
-        builder = CriteriaBuilder.createConnection();
+        builder = CriteriaBuilder.createBuilder();
         result = new Result<>(Student.class);
         query = new CriteriaQuery();
     }
@@ -78,6 +79,18 @@ class CriteriaBuilderTest {
         SQLibException ex =
                 assertThrows(SQLibException.class, () -> createPredicate().equal(result.get("id"), null));
         assertEquals(Constants.PARAM_MISSING, ex.getMessage());
+    }
+
+    @Test
+    void selectMaxOfColumn(){
+        assertEquals("SELECT MAX(age) FROM Student ",
+                query.selectMax("Student", new Column("age")).getQueryString());
+    }
+
+    @Test
+    void selectMinOfColumn(){
+        assertEquals("SELECT MIN(income) FROM student ",
+                query.selectMin("student", new Column("income")).getQueryString());
     }
 
 

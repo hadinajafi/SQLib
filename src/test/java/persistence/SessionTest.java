@@ -8,7 +8,7 @@ import sqlib.persistence.Session;
 import sqlib.query.Column;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static sqlib.criteria.CriteriaBuilder.createConnection;
+import static sqlib.criteria.CriteriaBuilder.createBuilder;
 import static sqlib.criteria.Predicate.createPredicate;
 
 public class SessionTest {
@@ -45,7 +45,7 @@ public class SessionTest {
 
     @Test
     void updateWithWhere() {
-        CriteriaBuilder builder = createConnection();
+        CriteriaBuilder builder = createBuilder();
         Predicate predicate1 = createPredicate().equal(new Column("age"), 20);
         Predicate predicate2 = createPredicate().greaterThan(new Column("average"), 13.4);
         String whereClause = builder.and(predicate1, predicate2).getCompoundPredicateQueryString();
@@ -63,7 +63,7 @@ public class SessionTest {
 
     @Test
     void deleteWithCondition() {
-        CriteriaBuilder builder = createConnection();
+        CriteriaBuilder builder = createBuilder();
         Predicate predicate1 = createPredicate().equal(new Column("age"), 20);
         String whereClause = predicate1.toString();
 
