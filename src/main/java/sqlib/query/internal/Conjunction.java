@@ -1,4 +1,4 @@
-package sqlib.criteria;
+package sqlib.query.internal;
 
 public enum Conjunction {
     EQUAL("="),

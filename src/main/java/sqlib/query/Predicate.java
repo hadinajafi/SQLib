@@ -1,6 +1,8 @@
-package sqlib.criteria;
+package sqlib.query;
 
-import static sqlib.criteria.Conjunction.*;
+import sqlib.query.internal.Condition;
+
+import static sqlib.query.internal.Conjunction.*;
 
 /**
  * author: Hadi Najafi

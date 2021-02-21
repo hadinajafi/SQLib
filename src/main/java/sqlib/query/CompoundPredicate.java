@@ -1,8 +1,10 @@
-package sqlib.criteria;
+package sqlib.query;
 
 
-import static sqlib.criteria.Conjunction.AND;
-import static sqlib.criteria.Conjunction.OR;
+import sqlib.query.Predicate;
+
+import static sqlib.query.internal.Conjunction.AND;
+import static sqlib.query.internal.Conjunction.OR;
 
 /**
  * author: Hadi Najafi

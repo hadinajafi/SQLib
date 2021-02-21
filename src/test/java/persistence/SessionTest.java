@@ -3,13 +3,13 @@ package persistence;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sqlib.criteria.CriteriaBuilder;
-import sqlib.criteria.Predicate;
+import sqlib.query.Predicate;
 import sqlib.persistence.Session;
-import sqlib.query.Column;
+import sqlib.query.internal.Column;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static sqlib.criteria.CriteriaBuilder.createBuilder;
-import static sqlib.criteria.Predicate.createPredicate;
+import static sqlib.query.Predicate.createPredicate;
 
 public class SessionTest {
 

@@ -1,7 +1,7 @@
-package sqlib.criteria;
+package sqlib.query.internal;
 
 import common.exception.SQLibException;
-import sqlib.query.Column;
+import sqlib.query.Predicate;
 
 import static common.util.Constants.PARAM_MISSING;
 

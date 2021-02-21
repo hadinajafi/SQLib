@@ -1,6 +1,6 @@
 package sqlib.criteria;
 
-import sqlib.query.*;
+import sqlib.query.Result;
 import sqlib.query.internal.*;
 
 import static sqlib.query.functions.SqlFunctions.*;

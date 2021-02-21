@@ -1,7 +1,6 @@
 package sqlib.query;
 
 import common.exception.SQLibException;
-import sqlib.criteria.Result;
 
 import static java.util.stream.IntStream.range;
 

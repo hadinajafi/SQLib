@@ -1,13 +1,15 @@
 package sqlib.persistence;
 
 import common.exception.PersistenceException;
-import sqlib.query.Delete;
-import sqlib.query.Insert;
-import sqlib.query.Update;
+import sqlib.query.internal.Delete;
+import sqlib.query.internal.Insert;
+import sqlib.query.internal.Update;
 import sqlib.query.internal.Where;
 
 /**
  * author: Hadi Najafi
+ *
+ * This class have the responsibility for creating queries of inserting, updating & deleting
  */
 
 public class Session {

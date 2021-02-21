@@ -1,7 +1,7 @@
-package sqlib.criteria;
+package sqlib.query;
 
 import common.exception.SQLibException;
-import sqlib.query.Column;
+import sqlib.query.internal.Column;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

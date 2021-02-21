@@ -1,8 +1,8 @@
-package sqlib.query;
+package sqlib.query.internal;
 
 import common.exception.SQLibException;
-import sqlib.criteria.Result;
-import sqlib.query.internal.Options;
+import sqlib.query.Result;
+import sqlib.query.Query;
 
 import static common.util.SQLConstants.FROM;
 import static common.util.SQLConstants.SELECT;

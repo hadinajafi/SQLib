@@ -1,5 +1,8 @@
 package sqlib.criteria;
 
+import sqlib.query.CompoundPredicate;
+import sqlib.query.Predicate;
+
 /**
  * author: Hadi Najafi
  */

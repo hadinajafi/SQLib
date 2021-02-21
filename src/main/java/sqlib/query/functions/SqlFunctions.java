@@ -1,6 +1,6 @@
 package sqlib.query.functions;
 
-import sqlib.query.Column;
+import sqlib.query.internal.Column;
 
 import static common.util.SQLConstants.*;
 

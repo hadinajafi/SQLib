@@ -4,12 +4,14 @@ import common.exception.SQLibException;
 import common.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import sqlib.query.Column;
+import sqlib.query.Result;
+import sqlib.query.internal.Column;
+import sqlib.query.Predicate;
 import sqlib.query.internal.Order;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static sqlib.criteria.Predicate.createPredicate;
+import static sqlib.query.Predicate.createPredicate;
 import static sqlib.query.functions.SqlFunctions.COUNT;
 
 class CriteriaBuilderTest {
@@ -35,6 +37,11 @@ class CriteriaBuilderTest {
     void reInitResultWithChildClassShouldWork() {
         var result = new Result<>(Child.class);
         assertEquals("SELECT * FROM Child ", query.selectAny(result).getQueryString());
+    }
+
+    @Test
+    void test() {
+        assertEquals("SELECT name, family FROM Student ", query.select("Student", "name", "family").getQueryString());
     }
 
     @Test
@@ -118,8 +125,8 @@ class CriteriaBuilderTest {
 
     @Test
     void groupByTest() {
-        assertEquals("SELECT age, name FROM Student GROUP BY age ",
-                query.select("Student", "age", "name")
+        assertEquals("SELECT age, COUNT(name) FROM Student GROUP BY age ",
+                query.select("Student", "age", COUNT(new Column("name")))
                         .groupBy("age").getQueryString());
     }
 

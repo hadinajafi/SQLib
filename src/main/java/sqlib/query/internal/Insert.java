@@ -1,4 +1,6 @@
-package sqlib.query;
+package sqlib.query.internal;
+
+import sqlib.query.Query;
 
 import static common.util.SQLConstants.INSERT;
 import static common.util.SQLConstants.VALUES;

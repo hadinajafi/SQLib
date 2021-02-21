@@ -1,6 +1,7 @@
 package sqlib.criteria;
 
 import org.junit.jupiter.api.Test;
+import sqlib.query.Result;
 
 import java.util.Arrays;
 
